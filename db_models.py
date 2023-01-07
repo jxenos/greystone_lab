@@ -41,3 +41,17 @@ class Loan_Table(Base):
 
     def __repr__(self):
         return f"Loan_Table(id={self.id!r}, principal={self.principal!r}, term={self.term!r}, apr={self.apr!r})"
+
+
+class Payment_Table(Base):
+    __tablename__ = "payment"
+
+    id = Column(Integer, primary_key=True)
+    # guid
+    loan_id = Column(Integer, ForeignKey("loan.id"), nullable=False)
+    principal_paid = Column(Float)
+    interest_paid = Column(Float)
+    principal_remaining = Column(Float)
+
+    def __repr__(self):
+        return f"Payment_Table(id={self.id!r}, loan_id={self.loan_id!r}, principal_paid={self.principal_paid!r}, interest_paid={self.interest_paid!r}, principal_remaining={self.principal_remaining!r})"
