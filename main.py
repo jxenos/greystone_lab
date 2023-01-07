@@ -12,6 +12,13 @@ class User(BaseModel):
     phone: str | None = None
 
 
+class Loan(BaseModel):
+    userid: int
+    principal_amount: float
+    term: int
+    apr: float
+
+
 @app.get('/')
 async def root():
     return {'message': 'Hello World'}
@@ -23,7 +30,7 @@ async def create_user(user: User):
 
 
 @app.post(f'/{MAJOR}/loan/')
-async def create_loan(loan: User):
+async def create_loan(loan: Loan):
     return loan
 
 
