@@ -35,8 +35,8 @@ async def create_loan(loan: Loan):
 
 
 @app.get(f'/{MAJOR}/loan/schedule')
-async def get_loan_schedule(loanid):
-    return loanid
+async def get_loan_schedule(loan_id):
+    return loan_id
 
 
 @app.get(f'/{MAJOR}/loan/month')
@@ -45,10 +45,10 @@ async def get_loan_summary(month, year):
 
 
 @app.get(f'/{MAJOR}/user/loans')
-async def get_all_user_loans(userid):
-    return userid
+async def get_all_user_loans(user_id):
+    return user_id
 
 
 @app.get(f'/{MAJOR}/user/shareloan')
-async def share_loan(userid, loanid):
-    return userid, loanid
+async def share_loan(user_id, loan_id):
+    return user_id, loan_id
