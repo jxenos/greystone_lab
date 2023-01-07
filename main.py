@@ -20,3 +20,8 @@ async def root():
 @app.post(f'/{MAJOR}/user/')
 async def create_user(user: User):
     return user
+
+
+@app.post(f'/{MAJOR}/loan/')
+async def create_loan(loan: User):
+    return loan
