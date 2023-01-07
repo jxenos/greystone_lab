@@ -25,3 +25,23 @@ async def create_user(user: User):
 @app.post(f'/{MAJOR}/loan/')
 async def create_loan(loan: User):
     return loan
+
+
+@app.get(f'/{MAJOR}/loan/schedule')
+async def get_loan_schedule(loanid):
+    return loanid
+
+
+@app.get(f'/{MAJOR}/loan/month')
+async def get_loan_summary(month, year):
+    return month, year
+
+
+@app.get(f'/{MAJOR}/user/loans')
+async def get_all_user_loans(userid):
+    return userid
+
+
+@app.get(f'/{MAJOR}/user/shareloan')
+async def share_loan(userid, loanid):
+    return userid, loanid
