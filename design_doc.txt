@@ -40,5 +40,5 @@ GET Methods:
 
 tables:
 user:userid, guid, email, first, last, phone
-loan: loanid, guid, userid, principal, term, interest
+loan: loanid, guid, userid, principal, term, interest, startdate
 payment: paymentid, guid, loanid, principal, interest
