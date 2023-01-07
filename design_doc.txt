@@ -1,0 +1,44 @@
+The API should allow a client to,
+- Create a user
+- Create loan
+- Fetch loan schedule
+- Fetch loan summary for a specific month
+- Fetch all loans for a user
+- Share loan with another user
+A loan record should at least contain the following fields:
+- Amount
+- Annual Interest Rate
+- Loan Term in months
+The loan schedule endpoint should return an array of length loan_term,
+consisting of:
+{
+Month: n
+Remaining balance: $xxxx,
+Monthly payment: $xxx
+}
+The loan summary endpoint should accept a month number as a parameter
+and return:
+- Current principal balance at given month
+- The aggregate amount of principal already paid
+- The aggregate amount of interest already paid
+To calculate the above, you will have to code a function that
+generates an amortization schedule. There are plenty of libraries that
+can do this for you, but for this challenge, please develop the
+function yourself. You may use general libraries, such as numpy, if
+you would like.
+
+
+POST Methods:
+/usr/create
+/loan/create
+
+GET Methods:
+/loan/${id}/schedule
+/loan/${id}/${year}-${month}
+/usr/getLoans?usrid=${userid}
+/shareloan?
+
+tables:
+user:userid, guid, email, first, last, phone
+loan: loanid, guid, userid, principal, term, interest
+payment: paymentid, guid, loanid, principal, interest
