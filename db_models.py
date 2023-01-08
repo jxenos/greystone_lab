@@ -1,4 +1,5 @@
 # db_models.py
+import os
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
@@ -6,11 +7,18 @@ from sqlalchemy import String
 from sqlalchemy import Float
 from sqlalchemy import Date
 from sqlalchemy import DateTime
+from sqlalchemy import create_engine
+
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
 
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+connection_string = f"sqlite:///{os.path.join(BASE_DIR,'site.db')}"
+
 Base = declarative_base()
+
+engine = create_engine(connection_string, echo=True)
 
 
 class User_Table(Base):
@@ -21,7 +29,7 @@ class User_Table(Base):
     first_name = Column(String(30))
     last_name = Column(String(30))
     email = Column(String(50))
-    phone = Column(Integer(10))
+    phone = Column(Integer())
 
     def __repr__(self):
         return f"User_Table(id={self.id!r}, first={self.first_name!r}, last={self.last_name!r})"
@@ -34,10 +42,10 @@ class Loan_Table(Base):
     # guid
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     principal = Column(Float)
-    term = Column(Integer(3))
+    term = Column(Integer())
     apr = Column(Float)
     start_date = Column(Date)
-    created_date = Column(DateTime(timezone=False), server_default=func.now())
+    created_date = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
         return f"Loan_Table(id={self.id!r}, principal={self.principal!r}, term={self.term!r}, apr={self.apr!r})"
