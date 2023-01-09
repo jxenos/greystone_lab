@@ -28,6 +28,23 @@ class Loan(BaseModel):
 session = Session(bind=engine)
 
 
+def calc_amortization_amt(principal, rate, term):
+    i = (1 + rate) ** term
+    return principal * rate * i / (i-1)
+
+
+def amortization_sched(principal, rate, term):
+    amortization = calc_amortization_amt(principal, rate, term)
+    p = 1
+    balance = principal
+    while p <= term:
+        interest = balance * rate
+        principal = amortization - interest
+        balance = balance - principal
+        yield p, amortization, interest, principal, balance if balance > 0 else 0
+        p += 1
+
+
 @app.get('/')
 async def root():
     return {'message': 'Hello World'}
