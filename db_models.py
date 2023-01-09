@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import sessionmaker
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 connection_string = f"sqlite:///{os.path.join(BASE_DIR,'site.db')}"
@@ -19,6 +20,8 @@ connection_string = f"sqlite:///{os.path.join(BASE_DIR,'site.db')}"
 Base = declarative_base()
 
 engine = create_engine(connection_string, echo=True)
+
+Session = sessionmaker()
 
 
 class User_Table(Base):
