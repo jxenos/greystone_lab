@@ -46,7 +46,7 @@ class Loan_Table(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     principal = Column(Float)
     term = Column(Integer())
-    apr = Column(Float)
+    rate = Column(Float)
     start_date = Column(Date)
     created_date = Column(DateTime(timezone=True), server_default=func.now())
 
