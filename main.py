@@ -1,4 +1,7 @@
+import datetime
+import json
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 
 from db_models import Session
@@ -22,7 +25,8 @@ class Loan(BaseModel):
     userid: int
     principal_amount: float
     term: int
-    apr: float
+    rate: float
+    start_date: datetime.date
 
 
 session = Session(bind=engine)
@@ -52,7 +56,8 @@ async def root():
 
 @app.post(f'/{MAJOR}/user/')
 async def create_user(user: User):
-    new_user = User_Table(email='', first='', last='', phone='')
+    new_user = User_Table(email=user.email, first=user.first_name,
+                          last=user.last_name, phone=user.phone)
     session.add(new_user)
     session.commit()
     return user
@@ -60,8 +65,8 @@ async def create_user(user: User):
 
 @app.post(f'/{MAJOR}/loan/')
 async def create_loan(loan: Loan):
-    new_loan = Loan_Table(user_id='', principal='',
-                          term='', interest='', start_date='')
+    new_loan = Loan_Table(user_id=loan.userid, principal=loan.principal_amount,
+                          term=loan.term, interest=loan.rate, start_date=loan.start_date)
     session.add(new_loan)
     session.commit()
     return loan
@@ -69,18 +74,22 @@ async def create_loan(loan: Loan):
 
 @app.get(f'/{MAJOR}/loan/schedule')
 async def get_loan_schedule(loan_id):
-    return loan_id
+    loan = session.query(Loan_Table).get(loan_id)
+    sched = amortization_sched(loan.principal, loan.rate, loan.term)
+    return json.dumps(sched)
 
 
 @app.get(f'/{MAJOR}/loan/month')
-async def get_loan_summary(month):
-    return month
+async def get_loan_summary(loan_id, month):
+    loan = session.query(Loan_Table).get(loan_id)
+    sched = amortization_sched(loan.principal, loan.rate, month)
+    return sched
 
 
 @app.get(f'/{MAJOR}/user/loans')
 async def get_all_user_loans(user_id):
-    session.query(Loan_Table).get(user_id)
-    return user_id
+    loans = session.query(Loan_Table).get(user_id)
+    return jsonable_encoder(loans)
 
 
 @app.get(f'/{MAJOR}/user/shareloan')
